@@ -6,7 +6,7 @@ create table email
     constraint email_pk__email unique (email)
 );
 
-create table "topping"
+create table topping
 (
     email_id int not null,
     topping_name varchar(32) not null,
