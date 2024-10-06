@@ -1,6 +1,6 @@
 create table email
 (
-    id int not null,
+    id serial not null,
     email varchar(64) NOT NULL,
     constraint email_pk__id primary key (id),
     constraint email_pk__email unique (email)
