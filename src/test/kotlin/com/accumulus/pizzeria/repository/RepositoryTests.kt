@@ -7,6 +7,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.dao.EmptyResultDataAccessException
 import java.util.LinkedList
 
 @DataJpaTest
@@ -115,6 +116,10 @@ class RepositoryTests @Autowired constructor(
 
         assertThat(results).hasSize(3)
 
+        val singleResult = suggestedProductRepository.findByEmailIdAndProductName(testEmail.id!!, "cheesesteak")
+        assertThat(singleResult.emailId).isEqualTo(suggestedProduct2.emailId)
+        assertThat(singleResult.productName).isEqualTo(suggestedProduct2.productName)
+
         suggestedProductRepository.deleteByEmailIdAndProductName(testEmail.id!!, "cheesesteak")
         val resultsAfterDelete = suggestedProductRepository.findAllByEmailId(testEmail.id!!)
 
@@ -122,6 +127,14 @@ class RepositoryTests @Autowired constructor(
 
         for (product in resultsAfterDelete) {
             assertThat(product.productName).isNotEqualTo("cheesesteak")
+        }
+
+        try {
+            val missingProduct = suggestedProductRepository.findByEmailIdAndProductName(testEmail.id!!, "cheesesteak")
+            assertThat(true).isFalse() // force fail if this works
+        } catch (ex: EmptyResultDataAccessException) {
+            // successfully thrown
+            assertThat(true).isTrue()
         }
     }
 }

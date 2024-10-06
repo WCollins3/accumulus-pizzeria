@@ -7,7 +7,6 @@ import com.accumulus.pizzeria.repository.ToppingRepository
 import com.accumulus.pizzeria.repository.VoteRepository
 import com.accumulus.pizzeria.repository.model.Email
 import com.accumulus.pizzeria.repository.model.Topping
-import com.accumulus.pizzeria.repository.model.Vote
 import jakarta.transaction.Transactional
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

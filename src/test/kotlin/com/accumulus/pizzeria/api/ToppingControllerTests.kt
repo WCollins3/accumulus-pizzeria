@@ -1,6 +1,5 @@
 package com.accumulus.pizzeria.api
 
-import com.accumulus.pizzeria.api.dto.ToppingsDto
 import com.accumulus.pizzeria.repository.EmailRepository
 import com.accumulus.pizzeria.repository.ToppingRepository
 import com.accumulus.pizzeria.repository.VoteRepository
