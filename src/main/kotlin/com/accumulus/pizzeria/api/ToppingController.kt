@@ -3,11 +3,14 @@ package com.accumulus.pizzeria.api
 import com.accumulus.pizzeria.api.dto.ToppingsDto
 import com.accumulus.pizzeria.repository.EmailRepository
 import com.accumulus.pizzeria.repository.ToppingRepository
+import com.accumulus.pizzeria.repository.VoteRepository
 import com.accumulus.pizzeria.repository.model.Email
 import com.accumulus.pizzeria.repository.model.Topping
+import com.accumulus.pizzeria.repository.model.Vote
 import jakarta.transaction.Transactional
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,7 +19,7 @@ import java.util.LinkedList
 
 @RestController
 @RequestMapping("/topping")
-class ToppingController(private val emailRepository: EmailRepository, private val toppingRepository: ToppingRepository) {
+class ToppingController(private val emailRepository: EmailRepository, private val toppingRepository: ToppingRepository, private val voteRepository: VoteRepository) {
 
     @PostMapping
     @Transactional
@@ -38,5 +41,10 @@ class ToppingController(private val emailRepository: EmailRepository, private va
         toppingRepository.saveAll(toppingsToSave)
 
         return ResponseEntity(HttpStatus.ACCEPTED)
+    }
+
+    @GetMapping("/votes")
+    fun getVotes(): List<Vote> {
+        return voteRepository.findAll();
     }
 }
