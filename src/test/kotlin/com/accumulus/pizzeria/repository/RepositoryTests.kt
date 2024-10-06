@@ -1,6 +1,7 @@
 package com.accumulus.pizzeria.repository
 
 import com.accumulus.pizzeria.repository.model.Email
+import com.accumulus.pizzeria.repository.model.SuggestedProduct
 import com.accumulus.pizzeria.repository.model.Topping
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -12,7 +13,8 @@ import java.util.LinkedList
 class RepositoryTests @Autowired constructor(
     val emailRepository: EmailRepository,
     val toppingRepository: ToppingRepository,
-    val voteRepository: VoteRepository) {
+    val voteRepository: VoteRepository,
+    val suggestedProductRepository: SuggestedProductRepository) {
 
     @Test
     fun `Test emailRepository findByEmail Returns correct values`() {
@@ -89,5 +91,37 @@ class RepositoryTests @Autowired constructor(
         assertThat(results.elementAt(1).votes).isEqualTo(2)
         assertThat(results.elementAt(2).toppingName).isEqualTo("onion")
         assertThat(results.elementAt(2).votes).isEqualTo(1)
+    }
+
+    @Test
+    fun `Test suggestedProductRepository findAllByEmailId finds all products and deleteByEmailIdAndSuggestedProduct deletes correct values`() {
+        val testEmail = Email(email = "test@test.com")
+        emailRepository.save(testEmail)
+        val otherEmail = Email(email = "other@test.com")
+        emailRepository.save(otherEmail)
+
+        val suggestedProduct1 = SuggestedProduct(testEmail.id!!, "zeppole")
+        val suggestedProduct2 = SuggestedProduct(testEmail.id!!, "cheesesteak")
+        val suggestedProduct3 = SuggestedProduct(testEmail.id!!, "cannoli")
+
+        suggestedProductRepository.save(suggestedProduct1)
+        suggestedProductRepository.save(suggestedProduct2)
+        suggestedProductRepository.save(suggestedProduct3)
+
+        val otherSuggestedProduct = SuggestedProduct(otherEmail.id!!, "justice")
+        suggestedProductRepository.save(otherSuggestedProduct)
+
+        val results = suggestedProductRepository.findAllByEmailId(testEmail.id!!)
+
+        assertThat(results).hasSize(3)
+
+        suggestedProductRepository.deleteByEmailIdAndProductName(testEmail.id!!, "cheesesteak")
+        val resultsAfterDelete = suggestedProductRepository.findAllByEmailId(testEmail.id!!)
+
+        assertThat(resultsAfterDelete).hasSize(2)
+
+        for (product in resultsAfterDelete) {
+            assertThat(product.productName).isNotEqualTo("cheesesteak")
+        }
     }
 }
