@@ -6,5 +6,5 @@ import java.io.Serializable
 @Embeddable
 class ToppingCompositeKey (
     var emailId: Long,
-    var topping: String
+    var toppingName: String
 ): Serializable

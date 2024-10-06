@@ -9,7 +9,7 @@ create table email
 create table "topping"
 (
     email_id int not null,
-    topping varchar(32) not null,
-    constraint topping_pk_email_id_topping primary key (email_id, topping),
+    topping_name varchar(32) not null,
+    constraint topping_pk_email_id_topping primary key (email_id, topping_name),
     constraint topping_email_id_fk foreign key (email_id) references email (id)
 );

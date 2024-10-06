@@ -11,5 +11,5 @@ class Topping(
     var emailId: Long,
 
     @Id
-    var topping: String
+    var toppingName: String
 )
