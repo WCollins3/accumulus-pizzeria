@@ -33,7 +33,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Vote'
+                  $ref: '#/components/schemas/VoteListDto'
 
 components:
   schemas:
@@ -65,3 +65,17 @@ components:
           type: integer
           description: Number of votes the topping has received.
           example: 100
+
+    VoteListDto:
+      type: object
+      properties:
+        votes:
+          type: array
+          description: Number of votes each topping has received.
+          items:
+            $ref: '#/components/schemas/Vote'
+          example:
+            - toppingName: 'peperoni'
+              votes: 100
+            - toppingName: mushrooms
+              votes: 50
