@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Pizzeria Topping API
+  description: API for retrieving and displaying pizza topping votes.
+  version: 1.0.0
+paths:
+  /topping:
+    post:
+      summary: Add or update pizza toppings for an email
+      description: Add new pizza toppings or update existing toppings for a specified email.
+      operationId: postToppings
+      requestBody:
+        description: Pizza toppings data to be added or updated.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToppingsDto'
+      responses:
+        "202":
+          description: Toppings were accepted and saved.
+        "400":
+          description: Invalid input.
+    get:
+      summary: Get all topping votes
+      description: Retrieve a list of pizza toppings and their vote counts.
+      operationId: getVotes
+      responses:
+        "200":
+          description: A list of toppings and their respective votes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vote'
+
+components:
+  schemas:
+    ToppingsDto:
+      type: object
+      required:
+        - email
+        - toppings
+      properties:
+        email:
+          type: string
+          description: Email of the user.
+          example: test@test.com
+        toppings:
+          type: array
+          description: List of pizza toppings.
+          items:
+            type: string
+          example: ["pepperoni", "mushrooms"]
+
+    Vote:
+      type: object
+      properties:
+        toppingName:
+          type: string
+          description: Name of the pizza topping.
+          example: pepperoni
+        votes:
+          type: integer
+          description: Number of votes the topping has received.
+          example: 100
