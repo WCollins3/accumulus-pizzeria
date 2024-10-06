@@ -1,6 +1,7 @@
 package com.accumulus.pizzeria.api
 
 import com.accumulus.pizzeria.api.dto.ToppingsDto
+import com.accumulus.pizzeria.api.dto.VoteListDto
 import com.accumulus.pizzeria.repository.EmailRepository
 import com.accumulus.pizzeria.repository.ToppingRepository
 import com.accumulus.pizzeria.repository.VoteRepository
@@ -44,7 +45,7 @@ class ToppingController(private val emailRepository: EmailRepository, private va
     }
 
     @GetMapping("/votes")
-    fun getVotes(): List<Vote> {
-        return voteRepository.findAll();
+    fun getVotes(): VoteListDto {
+        return VoteListDto(voteRepository.findAll());
     }
 }
