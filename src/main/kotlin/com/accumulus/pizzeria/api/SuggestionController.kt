@@ -21,6 +21,7 @@ class SuggestionController(private val emailRepository: EmailRepository, private
     @PostMapping("/product")
     @Transactional
     fun postProductSuggestion(@RequestBody suggestionDto: PostSuggestionDto): ResponseEntity<Unit> {
+        // find the existing email or create it if it doesn't exist
         var email = emailRepository.findByEmail(suggestionDto.email)
         if (email == null) {
             val newEmail = Email(email = suggestionDto.email)

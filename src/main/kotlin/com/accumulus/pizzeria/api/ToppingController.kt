@@ -24,12 +24,14 @@ class ToppingController(private val emailRepository: EmailRepository, private va
     @PostMapping
     @Transactional
     fun postToppings(@RequestBody toppings: ToppingsDto): ResponseEntity<Unit> {
+        // find the existing email or create it if it doesn't exist
         var email = emailRepository.findByEmail(toppings.email)
         if (email == null) {
             val newEmail = Email(email = toppings.email)
             emailRepository.save(newEmail)
             email = newEmail
         } else {
+            // if the email exists, delete their existing votes so only the most recent ones are saved
             toppingRepository.deleteAllByEmailId(email.id!!)
         }
 
