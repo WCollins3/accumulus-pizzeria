@@ -3,12 +3,19 @@ info:
   title: Pizzeria Topping API
   description: API for retrieving and displaying pizza topping votes.
   version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
 paths:
   /topping:
     post:
       summary: Add or update pizza toppings for an email
       description: Add new pizza toppings or update existing toppings for a specified email.
       operationId: postToppings
+      tags:
+        - Votes
       requestBody:
         description: Pizza toppings data to be added or updated.
         required: true
@@ -21,10 +28,14 @@ paths:
           description: Toppings were accepted and saved.
         "400":
           description: Invalid input.
+
+  /topping/votes:
     get:
       summary: Get all topping votes
       description: Retrieve a list of pizza toppings and their vote counts.
       operationId: getVotes
+      tags:
+        - Votes
       responses:
         "200":
           description: A list of toppings and their respective votes.
@@ -34,6 +45,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/VoteListDto'
+
+  /suggestion/product:
+    post:
+      summary: Submit a product suggestion.
+      description: Create a new suggestion for a product. If the email doesn't exist, it will be created.
+      operationId: postSuggestion
+      tags:
+        - Suggestions
+      requestBody:
+        description: The email and product suggestion to submit.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostSuggestionDto'
+      responses:
+        '202':
+          description: Suggestion was accepted and saved.
+        '400':
+          description: Invalid input.
 
 components:
   schemas:
@@ -75,7 +106,22 @@ components:
           items:
             $ref: '#/components/schemas/Vote'
           example:
-            - toppingName: 'peperoni'
+            - toppingName: peperoni
               votes: 100
             - toppingName: mushrooms
               votes: 50
+
+    PostSuggestionDto:
+      type: object
+      required:
+        - email
+        - suggestion
+      properties:
+        email:
+          type: string
+          description: The email of the person suggesting the product.
+          example: test@test.com
+        suggestion:
+          type: string
+          description: The name of the suggested product.
+          example: zeppole
