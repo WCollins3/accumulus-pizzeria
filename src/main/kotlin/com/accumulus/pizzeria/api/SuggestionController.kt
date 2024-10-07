@@ -38,4 +38,6 @@ class SuggestionController(private val emailRepository: EmailRepository, private
 
         return ResponseEntity(HttpStatus.ACCEPTED)
     }
+
+    // todo: add GET endpoint to get the products that were suggested and the number of accounts that suggested them
 }
